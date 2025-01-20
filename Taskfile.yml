@@ -1,0 +1,10 @@
+version: "3.9"
+tasks:
+  start-db:
+    cmds:
+      - echo "Running development environment..."
+      - docker compose up -d
+  dev-stop:
+    cmds:
+      - echo "Stopping development environment..."
+      - docker compose down
