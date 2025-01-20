@@ -12,6 +12,8 @@ import { AuthController } from './auth/auth.controller';
 import { AdminService } from './users/services/admin.service';
 import { NewsProvidersService } from './news-providers/news-providers.service';
 import { JwtModule } from '@nestjs/jwt';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from './common/guards/auth.guard';
 
 @Module({
   imports: [
@@ -41,6 +43,15 @@ import { JwtModule } from '@nestjs/jwt';
     UsersModule,
   ],
   controllers: [AppController, NewsProvidersController, AuthController],
-  providers: [AppService, UsersService, NewsProvidersService, AdminService],
+  providers: [
+    AppService,
+    UsersService,
+    NewsProvidersService,
+    AdminService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+  ],
 })
 export class AppModule {}
