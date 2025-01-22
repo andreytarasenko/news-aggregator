@@ -1,8 +1,9 @@
 import { JwtService } from '@nestjs/jwt';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { comparePasswords } from 'src/common/utils/password';
-import { User, UserBase } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/services/users.service';
+import { UserDto } from 'src/users/dto/user.dto';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -11,11 +12,11 @@ export class AuthService {
     private readonly usersService: UsersService,
   ) {}
 
-  register(userBase: UserBase) {
+  register(userBase: CreateUserDto) {
     return this.usersService.create(userBase);
   }
 
-  async login(user: User) {
+  async login(user: UserDto) {
     const userData = await this.usersService.findOneById(user.id);
 
     if (!userData) {
@@ -36,7 +37,7 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
 
-  async logout(user: User) {
+  async logout(user: UserDto) {
     const userData = await this.usersService.findOneById(user.id);
 
     if (!userData) {
@@ -63,14 +64,14 @@ export class AuthService {
 
   //######
 
-  private async generateAccessToken(user: User) {
+  private async generateAccessToken(user: UserDto) {
     return this.JwtService.signAsync(
       { sub: user.id, email: user.email },
       { secret: process.env.JWT_SECRET },
     );
   }
 
-  private async generateRefreshToken(user: User) {
+  private async generateRefreshToken(user: UserDto) {
     return this.JwtService.signAsync(
       { sub: user.id, email: user.email },
       { secret: process.env.JWT_REFRESH_SECRET },

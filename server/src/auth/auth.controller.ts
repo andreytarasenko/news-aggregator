@@ -1,10 +1,11 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { User, UserBase } from 'src/users/entities/user.entity';
 import { RefreshTokenGuard } from './guards/refresh-token.guard';
 import { AccessTokenGuard } from './guards/access-token.guard';
 import { Roles } from 'src/common/decorators/roles';
 import { Public } from 'src/common/decorators/access';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { UserDto } from 'src/users/dto/user.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -12,20 +13,20 @@ export class AuthController {
 
   @Public()
   @Post('register')
-  register(@Body() userBase: UserBase) {
+  register(@Body() userBase: CreateUserDto) {
     return this.authService.register(userBase);
   }
 
   @Public()
   @Roles()
   @Post('login')
-  login(@Body() user: User) {
+  login(@Body() user: UserDto) {
     return this.authService.login(user);
   }
 
   @UseGuards(AccessTokenGuard)
   @Post('logout')
-  logout(@Body() user: User) {
+  logout(@Body() user: UserDto) {
     return this.authService.logout(user);
   }
 

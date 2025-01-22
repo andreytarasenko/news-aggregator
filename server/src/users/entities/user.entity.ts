@@ -6,25 +6,12 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Role } from '../enums/roles.enum';
-
-export interface UserBase {
-  email: string;
-  password: string;
-  role?: Role;
-}
-
-export interface User extends UserBase {
-  id: string;
-  firstName?: string;
-  lastName?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
-  refreshToken?: string;
-}
+import { UserDto } from '../dto/user.dto';
+import { CreateUserDto } from '../dto/create-user.dto';
 
 @Entity('user_entity')
-export default class UserEntity implements User {
-  constructor(userBase: UserBase) {
+export default class UserEntity implements UserDto {
+  constructor(userBase: CreateUserDto) {
     Object.assign(this, userBase);
   }
 

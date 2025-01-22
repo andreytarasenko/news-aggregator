@@ -6,18 +6,22 @@ import { Role } from '../enums/roles.enum';
 export class AdminService implements OnModuleInit {
   constructor(private readonly usersService: UsersService) {}
   async onModuleInit() {
-    const admin = await this.usersService.findOneByRole(Role.Admin);
+    try {
+      const admin = await this.usersService.findOneByRole(Role.Admin);
 
-    if (!admin) {
-      this.usersService
-        .create({
-          email: 'test@mail.com',
-          password: 'password',
-          role: Role.Admin,
-        })
-        .then((user) => {
-          console.log('Admin user created', user);
-        });
+      if (!admin) {
+        this.usersService
+          .create({
+            email: 'test@mail.com',
+            password: 'password',
+            role: Role.Admin,
+          })
+          .then((user) => {
+            console.log('Admin user created', user);
+          });
+      }
+    } catch (error) {
+      console.error('Error creating admin user', error);
     }
   }
 }

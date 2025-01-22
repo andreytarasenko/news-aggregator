@@ -9,7 +9,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { NewsProvidersController } from './news-providers/news-providers.controller';
 import { AuthController } from './auth/auth.controller';
-import { AdminService } from './users/services/admin.service';
 import { NewsProvidersService } from './news-providers/news-providers.service';
 import { JwtModule } from '@nestjs/jwt';
 import { APP_GUARD } from '@nestjs/core';
@@ -47,7 +46,6 @@ import { AuthGuard } from './common/guards/auth.guard';
     AppService,
     UsersService,
     NewsProvidersService,
-    AdminService,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
