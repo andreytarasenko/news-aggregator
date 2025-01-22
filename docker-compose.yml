@@ -1,50 +1,36 @@
-version: "3.9"
-
 services:
+  # backend:
+  #   build:
+  #     context: ./server
+  #     dockerfile: ../server.Dockerfile
+  #   volumes:
+  #     - ./server:/usr/src/app
+  #     - /usr/src/app/node_modules
+  #   ports:
+  #     - "3001:3001"
+  #   command: npm run start:dev
+  #   depends_on:
+  #     - postgres
+
   # front_end:
   #   build:
   #     context: ./front_end
-  #     dockerfile: Dockerfile
-  #   container_name: front_end
+  #     dockerfile: ../client.Dockerfile
   #   volumes:
-  #     - ./front_end:/app
-  #     - /app/node_modules
+  #     - ./front_end:/usr/src/app
+  #     - /usr/src/app/node_modules
   #   ports:
   #     - "3000:3000"
-  #   command: sh -c "npm run dev"
-  #   environment:
-  #     - NODE_ENV=development
-  #   depends_on:
-  #     - server
+  #   command: npm run dev
 
-  # server:
-  #   build:
-  #     context: ./server
-  #     dockerfile: Dockerfile
-  #   container_name: server
-  #   volumes:
-  #     - ./server:/app
-  #     - /app/node_modules
-  #   ports:
-  #     - "4000:4000"
-  #   command: sh -c "npm run start:dev"
-  #   environment:
-  #     - NODE_ENV=development
-  #     - DATABASE_URL=postgresql://postgres:postgres@db:5432/aggregator
-  #   depends_on:
-  #     - db
-
-  db:
+  postgres:
     image: postgres:17
     container_name: postgres
-    ports:
-      - "5432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: aggregator
+    ports:
+      - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-
-volumes:
-  postgres_data:
+      - ./db:/var/lib/postgresql/data
